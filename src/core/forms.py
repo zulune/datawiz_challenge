@@ -32,12 +32,12 @@ class SignUpForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email')
+        fields = ('email', )
 
     # Валідація унікальної електроної почти
     def clean_email(self):
         email = super().clean()
-        user = User.objects.filter(email__iexact=email)
+        user = User.objects.filter(email__iexact=email).exists()
         if user:
             raise ValidationError('You can not use this email address')
         return email
@@ -51,20 +51,18 @@ class SignUpForm(forms.ModelForm):
             raise ValidationError('Password1 and Password2 must mutch!')
 
 
-class SignUp(UserCacheMixin, forms.Form):
+class SignIn(UserCacheMixin, forms.Form):
     password = forms.CharField(
         label=('Password'),
-        strip=False
-        widget=forms.PasswordInput())
+        strip=False,
+        widget=forms.PasswordInput)
 
     def __init__(self, *args, **kwargs):
-        super(SignUp, self).__init__(*args, **kwargs)
-        self.fields['email'].attrs.update(
-            'class': 'form-control', 'placeholder': 'Email'
-        )
-        self.fields['Password'].attrs.update(
-            'class': 'form-control', 'placeholder': 'Password'
-        )
+        super().__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Email'})
+        self.fields['password'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Password'})
 
     def clean_password(self):
         password = self.cleaned_data['password']
@@ -75,3 +73,17 @@ class SignUp(UserCacheMixin, forms.Form):
         if not self.user_cache.check_password(password):
             raise ValidationError("You enter invalid password!")
         return password
+
+
+class SignInForm(SignIn):
+    email = forms.EmailField(label=('Email'))
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+
+        user = User.objects.filter(email__iexact=email).first()
+        if not user:
+            raise ValidationError('You entered invalid password')
+
+        user.user_cache = user
+        return email
