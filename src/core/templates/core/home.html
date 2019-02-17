@@ -5,9 +5,105 @@
 {% endblock title %}
 
 {% block content %}
-
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-4">
+                        <h1>Client info</h1>
+                        <span><strong>Client name: </strong>{{ client_info.name }}</span><br/>
+                        <span><strong>Client date from: </strong>{{ client_info.date_from }}</span><br/>
+                        <span><strong>Client date to: </strong>{{ client_info.date_to }}</span>
+                    </div>
+                    <div class="col-8">
+                        <h1>Shops</h1>
+                        <table class="table">
+                            <tbody>
+                                {% for shop in shops %}
+                                    <tr>
+                                        <th data-shop_id="{{ shop.shop_id }}">{{ shop }}</th>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Показник</th>
+                            <th>Дата до</th>
+                            <th>Дата з</th>
+                            <th>Різниця в %</th>
+                            <th>Різниця</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-6">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Назва товару</th>
+                                    <th>Зміна кількості продаж</th>
+                                    <th>Зміна обороту</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-6">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Назва товару</th>
+                                    <th>Зміна кількості продаж</th>
+                                    <th>Зміна обороту</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}
 
 {% block main_script %}
-
+<script>
+$(document).ready(function() {
+    
+})
+</script>
 {% endblock main_script %}

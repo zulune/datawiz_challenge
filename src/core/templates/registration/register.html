@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Register | {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-8 offset-2">
+            <h3 class="center">Registration</h3>
+            <form action="" class="form-group" method="post">
+            {% csrf_token %}
+                {{ form }}
+                <button type="submit" class="btn btn-primary">Register</button>
+                <span>OR</span>
+                <a href="{% url 'core:login' %}" class="btn btn-warning">Login</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

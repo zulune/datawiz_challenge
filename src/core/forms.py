@@ -29,10 +29,13 @@ class SignUpForm(forms.ModelForm):
         self.fields['email'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Email'}
         )
+        self.fields['username'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Username'}
+        )
 
     class Meta:
         model = User
-        fields = ('email', )
+        fields = ('username', 'email', )
 
     # Валідація унікальної електроної почти
     def clean_email(self):
@@ -52,6 +55,9 @@ class SignUpForm(forms.ModelForm):
 
 
 class SignIn(UserCacheMixin, forms.Form):
+    username = forms.CharField(
+        label=('Username'),
+        widget=forms.TextInput)
     password = forms.CharField(
         label=('Password'),
         strip=False,
@@ -59,8 +65,8 @@ class SignIn(UserCacheMixin, forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['email'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Email'})
+        self.fields['username'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Username'})
         self.fields['password'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Password'})
 
@@ -73,17 +79,3 @@ class SignIn(UserCacheMixin, forms.Form):
         if not self.user_cache.check_password(password):
             raise ValidationError("You enter invalid password!")
         return password
-
-
-class SignInForm(SignIn):
-    email = forms.EmailField(label=('Email'))
-
-    def clean_email(self):
-        email = self.cleaned_data['email']
-
-        user = User.objects.filter(email__iexact=email).first()
-        if not user:
-            raise ValidationError('You entered invalid password')
-
-        user.user_cache = user
-        return email
